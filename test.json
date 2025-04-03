@@ -1,0 +1,239 @@
+{
+    "collection_id": "d8e61cfc-2521-4358-b272-a9cb77eb9d27",
+    "items": [
+        {
+            "collection_item_id": "e81a4c1c-3b83-45ef-8424-05ec4668d5d2",
+            "questions": [
+                {
+                    "question_id": "1781d011-f372-42e6-bd0e-5f67f51847e6",
+                    "question_uz": "I live _____ an apartment _____ two American boys.",
+                    "answers": [
+                        {
+                            "answer_id": "2180e730-6586-4329-a803-c327e3dc94de",
+                            "text_uz": "in / with "
+                        },
+                        {
+                            "answer_id": "3f99a5fa-c429-4dea-98f7-06d520a827bb",
+                            "text_uz": "at / off"
+                        },
+                        {
+                            "answer_id": "a193d764-a4b3-4bb8-8476-c4873a4dc963",
+                            "text_uz": "at / of "
+                        },
+                        {
+                            "answer_id": "db7a33d3-cae3-4a73-a341-b469a68c4ef1",
+                            "text_uz": "in / for "
+                        }
+                    ]
+                },
+                {
+                    "question_id": "7619ebc0-8625-402f-8300-b1740cc1e060",
+                    "question_uz": "Questions 4",
+                    "answers": [
+                        {
+                            "answer_id": "0f69132f-0af4-407d-b29c-727dd3f2e277",
+                            "text_uz": "Answer 2 | 4"
+                        },
+                        {
+                            "answer_id": "5320023a-e81b-483c-9c0e-9ca987bd3db0",
+                            "text_uz": "Answer 4 | 4"
+                        },
+                        {
+                            "answer_id": "58149938-9932-4c03-90c2-2879afcfc8ac",
+                            "text_uz": "Answer 1 | 4"
+                        },
+                        {
+                            "answer_id": "c8edad99-6483-42ea-a3dc-a4bbc7ac455e",
+                            "text_uz": "Answer 3| 4"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "1264f1d1-f7ae-40b5-888b-7dd27666ab11",
+                    "question_uz": "Now she _____ alone, but when she was a child she _____ with her mother and sisters.",
+                    "answers": [
+                        {
+                            "answer_id": "43863bbe-9276-4335-8324-2796a392c6b0",
+                            "text_uz": "lived / lives"
+                        },
+                        {
+                            "answer_id": "975aa0ea-e699-49e9-8793-6f50f364980b",
+                            "text_uz": "lives / lived"
+                        },
+                        {
+                            "answer_id": "ecd3a10c-03cf-4c9e-ba6e-00ad5d8d9a78",
+                            "text_uz": "live / lived"
+                        },
+                        {
+                            "answer_id": "f9ebcb0c-2f12-49d7-85c6-6bee37c2e1ba",
+                            "text_uz": "live / -"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "030dc7d0-6a47-4444-9f6c-770b548f62e8",
+                    "question_uz": "Geoffrey _____ French before, but he _____ at university now.",
+                    "answers": [
+                        {
+                            "answer_id": "5b356833-5549-45d2-b9ee-f4cbf6ad014d",
+                            "text_uz": "did not study / studies"
+                        },
+                        {
+                            "answer_id": "bccfe17a-170c-4159-a306-f0cb87cea941",
+                            "text_uz": "study didn’t / studies"
+                        },
+                        {
+                            "answer_id": "cf218984-c910-4dd7-901d-010d12a49810",
+                            "text_uz": "didn’t studied / studies"
+                        },
+                        {
+                            "answer_id": "fc7e757f-4319-4d7d-9a97-24955683569a",
+                            "text_uz": "didn’t study / study"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "1dc8a8a0-8eab-4aea-9a94-6d092f78f68a",
+                    "question_uz": "Questions 3",
+                    "answers": [
+                        {
+                            "answer_id": "0bfe1f63-08d6-4ff3-aa14-55d67b6dc467",
+                            "text_uz": "Answer 3| 3"
+                        },
+                        {
+                            "answer_id": "949bdf53-b56d-439e-bf29-55f4db10fe6e",
+                            "text_uz": "Answer 2 | 3"
+                        },
+                        {
+                            "answer_id": "96c2c49c-a0df-4c87-b019-b3c83d289a04",
+                            "text_uz": "Answer 1 | 3"
+                        },
+                        {
+                            "answer_id": "acca03f5-a484-45df-b5a8-ac86373a2879",
+                            "text_uz": "Answer 4 | 3"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "7a7ad1f6-4441-4992-8d22-eeee94649e53",
+                    "question_uz": "When _____ you go shopping last?",
+                    "answers": [
+                        {
+                            "answer_id": "118bbf01-821c-405f-a7bd-4a52868d6b29",
+                            "text_uz": "do"
+                        },
+                        {
+                            "answer_id": "9f99c340-f4f2-4cb3-a05e-38ed25506a30",
+                            "text_uz": "doesn’t"
+                        },
+                        {
+                            "answer_id": "bbd0ee18-5a30-44ea-860f-bc66b786ed3a",
+                            "text_uz": "Did "
+                        },
+                        {
+                            "answer_id": "f74a645b-ef46-4564-9d8c-4e74efc01360",
+                            "text_uz": "does"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "ac632d64-4aa1-4b8b-bd6d-d65b8680adbc",
+                    "question_uz": "\"?\" belgisi o'rniga kerakli shaklni topib qo'ying",
+                    "image_url": "https://cdn.utas.uz/utas/321a2ad6-6d82-4b88-9eb4-60bd528e6945_photo_2025-03-05_16-39-46.jpg",
+                    "answers": [
+                        {
+                            "answer_id": "8d8ed799-ba7a-4cfe-a45c-7d9cfcc71fe2",
+                            "text_uz": "2",
+                            "image_url": "https://cdn.utas.uz/utas/64aec491-bc3c-405d-b669-cca3a8a95aec_logo.jpg"
+                        },
+                        {
+                            "answer_id": "a0f1e86e-eb31-454b-b381-57af854490b3",
+                            "text_uz": "4",
+                            "image_url": "https://cdn.utas.uz/utas/f6a17777-bda5-487c-8bc6-09d3d4fca23d_photo_2025-03-05_16-39-46.jpg"
+                        },
+                        {
+                            "answer_id": "a2281968-fd25-436e-9076-ffefdccc9ba3",
+                            "text_uz": "5"
+                        },
+                        {
+                            "answer_id": "aa2571a5-4d49-4873-9e84-a6235122d6ba",
+                            "text_uz": "3"
+                        },
+                        {
+                            "answer_id": "e7de2f4c-2ed8-4e4d-ac2c-f9a9e4d6da9d",
+                            "text_uz": "1"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "0460402d-9698-4b7c-9214-a28220e6e9b3",
+                    "question_uz": "_____ three languages: French, Spanish, and English.",
+                    "answers": [
+                        {
+                            "answer_id": "a9f61576-9cbf-48d4-b60c-ade2938daa0a",
+                            "text_uz": "I speaking"
+                        },
+                        {
+                            "answer_id": "b2995711-cd9a-4789-9613-b4ce2b78f212",
+                            "text_uz": "I’m speak"
+                        },
+                        {
+                            "answer_id": "b77340c2-74b0-44e0-a91e-b1ce77575fd5",
+                            "text_uz": "I speak"
+                        },
+                        {
+                            "answer_id": "f4f9a153-dec6-4729-a855-365a00e48b89",
+                            "text_uz": "I’m speaking"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "5aa2cb4b-0073-458c-a927-b8ca7d067fd2",
+                    "question_uz": "Questions 8",
+                    "answers": [
+                        {
+                            "answer_id": "1c3f5123-5b56-41bd-9a9d-8435877a550a",
+                            "text_uz": "Answer 2 | 8"
+                        },
+                        {
+                            "answer_id": "76022651-9f6c-436d-b4ab-03836d0dd6e9",
+                            "text_uz": "Answer 3| 8"
+                        },
+                        {
+                            "answer_id": "f6a2e4a8-abac-436b-8562-8ff4e98683a1",
+                            "text_uz": "Answer 1 | 8"
+                        },
+                        {
+                            "answer_id": "fc95db84-c99e-4a81-a195-d51637ca83fb",
+                            "text_uz": "Answer 4 | 8"
+                        }
+                    ]
+                },
+                {
+                    "question_id": "bf522be2-86e6-41a2-a642-5bfda74924fa",
+                    "question_uz": "I often _____ have a lot of time, so I _____ do the shopping myself.",
+                    "answers": [
+                        {
+                            "answer_id": "0af244cd-3f0b-462e-abd9-5d699463bf82",
+                            "text_uz": "didn’t / did "
+                        },
+                        {
+                            "answer_id": "0e6e7516-7c04-4a9e-8bef-218bbe609a8a",
+                            "text_uz": "doesn’t / does"
+                        },
+                        {
+                            "answer_id": "2e7fb095-920e-4a0b-af0c-81c0d5c60369",
+                            "text_uz": "didn’t / didn’t"
+                        },
+                        {
+                            "answer_id": "91ac464d-2193-4ac5-9466-133dadccb8bd",
+                            "text_uz": "don’t / don’t"
+                        }
+                    ]
+                }
+            ],
+            "count": 10
+        }
+    ],
+    "count": 10
+}

@@ -1,0 +1,1 @@
+https://api.admin.u-code.io/v1/invoke_function/binn-get-popular-place?project-id=7e2c2c8c-522f-4a40-ae43-a43b85ccd32e
