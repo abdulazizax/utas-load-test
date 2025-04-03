@@ -4,7 +4,7 @@ import { headers, testOptions } from "./helpers/config.js";
 
 export let options = testOptions;
 
-// Foydalanuvchi ma'lumotlari
+// User data
 const payload = {
   education_type: "1",
   exam_type: "with_online_test",
@@ -14,7 +14,7 @@ const payload = {
   is_now_exam_time: true
 };
 
-// 1. `setup()` - Bir martalik `POST` so‘rov (faqat 1 marta ishlaydi)
+// 1. `setup()` - One-time `POST` request (runs only once)
 export function setup() {
   const createApplicantUrl = "https://api.admin.utas.uz/create-applicant";
   const res = http.post(createApplicantUrl, JSON.stringify(payload), { headers });
@@ -33,20 +33,20 @@ export function setup() {
         applicantApiKey = responseBody.applicant_api_key;
         console.log(`✅ Applicant API Key: ${applicantApiKey}`);
       } else {
-        console.log("⚠️ Applicant API Key mavjud emas.");
+        console.log("⚠️ Applicant API Key not found.");
       }
     } catch (e) {
-      console.error("❌ JSON parse qilishda xatolik:", e);
+      console.error("❌ Error parsing JSON:", e);
     }
   }
 
   return { applicantApiKey };
 }
 
-// 2. `default()` - Har bir iteratsiyada `GET` so‘rov yuborish
+// 2. `default()` - Send `GET` request in each iteration
 export default function (data) {
   if (!data.applicantApiKey) {
-    console.log("⛔ Applicant API Key yo‘q, `GET` so‘rov yuborilmaydi.");
+    console.log("⛔ No Applicant API Key, `GET` request will not be sent.");
     return;
   }
 
