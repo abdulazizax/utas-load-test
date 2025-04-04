@@ -5,177 +5,190 @@ import { uuidv4 } from "https://jslib.k6.io/k6-utils/1.2.0/index.js";
 
 export let options = testOptions;
 
-// User data
-const payload = {
+// 1. Applicant yaratish va exam data olish uchun foydalanuvchi maʼlumotlari
+const applicantPayload = {
   education_type: "1",
   exam_type: "with_online_test",
   faculty: "2",
   speciality: "17",
-  user_id: "ec1469b7-9850-4de6-b603-a8ef4293a70d",
+  user_id: "20cb8ba4-e331-4f1b-b855-c070abd5896c",
   is_now_exam_time: true
 };
 
-// 1️⃣ **setup()** - Create Applicant, get exam data and generate test questions (only once)
 export function setup() {
-  // Create Applicant
+  // --- Applicant yaratish ---
   const createApplicantUrl = "https://api.admin.utas.uz/create-applicant";
-  const resApplicant = http.post(createApplicantUrl, JSON.stringify(payload), { headers });
+  const resApplicant = http.post(createApplicantUrl, JSON.stringify(applicantPayload), { headers });
   check(resApplicant, {
     "✅ Applicant creation successful": (r) => r.status === 200 || r.status === 201,
-    "✅ JSON returned for Applicant": (r) => r.body && r.body.length > 0,
+    "✅ Applicant JSON returned": (r) => r.body && r.body.length > 0,
   });
-
-  let applicantApiKey = null;
+  let applicantApiKey;
   try {
-    const responseBody = JSON.parse(resApplicant.body);
-    if (responseBody && responseBody.applicant_api_key) {
-      applicantApiKey = responseBody.applicant_api_key;
-      console.log(`✅ Applicant API Key: ${applicantApiKey}`);
-    } else {
-      console.log("⚠️ Applicant API Key not found.");
-    }
+    const resp = JSON.parse(resApplicant.body);
+    applicantApiKey = resp.applicant_api_key;
+    console.log(`✅ Applicant API Key: ${applicantApiKey}`);
   } catch (e) {
-    console.error("❌ Error parsing Applicant response JSON:", e);
+    console.error("❌ Error parsing Applicant response:", e);
   }
-
   if (!applicantApiKey) {
-    throw new Error("Applicant API Key not found.");
+    throw new Error("Applicant API Key not obtained.");
   }
-
-  // Get Exam data (GET)
-  const getUrl = `https://api.admin.utas.uz/applicant-exam-data/${payload.user_id}/${applicantApiKey}`;
+  
+  // --- Exam data olish ---
+  const examDataUrl = `https://api.admin.utas.uz/applicant-exam-data/${applicantPayload.user_id}/${applicantApiKey}`;
   let retries = 5;
-  let examData = null;
-  let collectionId = null;
-  let lastGetResponse = null;
+  let examData, collectionId;
+  let lastResp;
   while (retries > 0) {
-    lastGetResponse = http.get(getUrl, { headers });
-    check(lastGetResponse, {
-      "✅ GET request successful": (r) => r.status === 200,
-      "✅ Exam data exists": (r) => r.body && r.body.length > 0 && !r.body.includes("no exam data found"),
+    lastResp = http.get(examDataUrl, { headers });
+    check(lastResp, {
+      "✅ GET exam data successful": (r) => r.status === 200,
+      "✅ Exam data exists": (r) =>
+        r.body && r.body.length > 0 && !r.body.includes("no exam data found"),
     });
-    if (lastGetResponse.status === 200 && !lastGetResponse.body.includes("no exam data found")) {
+    if (lastResp.status === 200 && !lastResp.body.includes("no exam data found")) {
       try {
-        const parsedBody = JSON.parse(lastGetResponse.body);
-        if (parsedBody.exam_data && parsedBody.exam_data.collection_data) {
-          examData = parsedBody.exam_data;
-          collectionId = parsedBody.exam_data.collection_data.id;
-          console.log(`✅ Exam data received! Collection ID: ${collectionId}`);
+        const parsed = JSON.parse(lastResp.body);
+        if (parsed.exam_data && parsed.exam_data.collection_data) {
+          examData = parsed.exam_data;
+          collectionId = parsed.exam_data.collection_data.id;
+          // console.log(`✅ Exam data received! Collection ID: ${collectionId}`);
           break;
-        } else {
-          console.log("⚠️ Collection ID not found.");
         }
       } catch (e) {
-        console.error("❌ Error parsing Exam data JSON:", e);
+        console.error("❌ Error parsing Exam data:", e);
       }
     }
-    console.log("⏳ Exam data not ready yet, retrying...");
+    console.log("⏳ Exam data not ready, retrying...");
     sleep(5);
     retries--;
   }
-
   if (!examData || !collectionId) {
-    throw new Error("Exam data or Collection ID not found. Stopping test.");
+    throw new Error("Exam data or Collection ID not found. Aborting test.");
   }
+  // console.log(`📢 Final Exam Data: ${lastResp.body}`);
+  
+  // --- Yangi Applicant Test Attempt yaratish ---
+  // CreateApplicantTestAttempt endpoint: POST /test-applicant-attempt/{token}
+  const attemptUrl = `https://api.admin.utas.uz/test-applicant-attempt/${applicantApiKey}`;
 
-  console.log(`📢 Last GET Response Body: ${lastGetResponse.body}`);
-
-  // Generate test questions (POST)
+  const attemptPayload = {
+    applicant_id: applicantPayload.user_id,
+    collection_id: collectionId,
+    score: 0,
+    status: "started"
+  };
+  // console.log(`📢 Payload for CreateApplicantTestAttempt: ${JSON.stringify(attemptPayload)}`);
+  const resAttempt = http.post(attemptUrl, JSON.stringify(attemptPayload), { headers });
+  check(resAttempt, {
+    "✅ CreateApplicantTestAttempt request successful": (r) => r.status === 201,
+    "✅ Attempt JSON returned": (r) => r.body && r.body.length > 0,
+  });
+  let attemptResponse;
+  try {
+    attemptResponse = JSON.parse(resAttempt.body);
+    // console.log("📢 Attempt response:", JSON.stringify(attemptResponse));
+  } catch (e) {
+    console.error("❌ Error parsing Attempt response:", e);
+  }
+  // Agar backend javobida attempt id "id" yoki "applicant_attempt_id" orqali qaytarilsa:
+  const applicantAttemptId = attemptResponse && (attemptResponse.id || attemptResponse.applicant_attempt_id);
+  // console.log(`✅ Created applicant test attempt: ${applicantAttemptId}`);
+  if (!applicantAttemptId) {
+    throw new Error("Applicant Test Attempt ID not obtained.");
+  }
+  
+  // --- Test questions generate qilish ---
+  // POST /test-question/generate/{token}
   const testGenUrl = `https://api.admin.utas.uz/test-question/generate/${applicantApiKey}`;
-  const testPayload = {
+  // Test generation uchun payload: exam_data va collection_id yuboriladi.
+  const testGenPayload = {
     exam_data: examData,
     collection_id: collectionId,
   };
-  const resTestGen = http.post(testGenUrl, JSON.stringify(testPayload), { headers });
+  const resTestGen = http.post(testGenUrl, JSON.stringify(testGenPayload), { headers });
   check(resTestGen, {
     "✅ Test generation request successful": (r) => r.status === 200 || r.status === 201,
   });
-  console.log(`📢 Test generation result: ${resTestGen.body}`);
-
-  // Here we simulate the answer structure from test results.
-  // For example, test generation response might be in this format:
-  // { questions: [ { collection_item_id, question_id, answer_id }, ... ] }
-  // If you know the actual response structure, you can parse it here.
-  let testQuestions = [];
+  // console.log(`📢 Test generation result: ${resTestGen.body}`);
+  let generatedQuestions = [];
   try {
-    const parsedTest = JSON.parse(resTestGen.body);
-    if (parsedTest.questions && Array.isArray(parsedTest.questions)) {
-      testQuestions = parsedTest.questions;
-    } else {
-      // If test questions field is not available, simulate with dummy data:
-      for (let i = 0; i < 10; i++) {
-        testQuestions.push({
-          collection_item_id: `ci-${i}`,
-          question_id: `q-${i}`,
-          answer_id: `a-${i}`
+    const parsedGen = JSON.parse(resTestGen.body);
+    // Agar "items" maydoni bo'lsa, u yerda odatda bitta item mavjud deb taxmin qilamiz.
+    if (parsedGen.items && Array.isArray(parsedGen.items) && parsedGen.items.length > 0) {
+      // Biz barcha savollarni bitta item ichidan yig'amiz:
+      const item = parsedGen.items[0];
+      if (item.questions && Array.isArray(item.questions)) {
+        // Har bir savol uchun birinchi javobni tanlaymiz
+        item.questions.forEach((q) => {
+          if (q.answers && Array.isArray(q.answers) && q.answers.length > 0) {
+            generatedQuestions.push({
+              question_id: q.question_id,
+              answer_id: q.answers[0].answer_id
+            });
+          }
         });
       }
     }
   } catch (e) {
-    console.error("❌ Error parsing test generation response, using dummy data:", e);
-    for (let i = 0; i < 10; i++) {
-      testQuestions.push({
-        collection_item_id: `ci-${i}`,
-        question_id: `q-${i}`,
-        answer_id: `a-${i}`
-      });
-    }
+    console.error("❌ Error parsing Test Generation response:", e);
   }
+  if (generatedQuestions.length === 0) {
+    throw new Error("No test questions extracted.");
+  }
+  // console.log(`✅ Extracted ${generatedQuestions.length} test question(s).`);
 
+  let collection_item_id = "";
+  try {
+    const parsedGen = JSON.parse(resTestGen.body);
+    if (parsedGen.items && parsedGen.items.length > 0) {
+      collection_item_id = parsedGen.items[0].collection_item_id;
+    }
+  } catch (e) {
+    console.error("❌ Error re-parsing test generation for collection_item_id:", e);
+  }
+  if (!collection_item_id) {
+    throw new Error("Collection item ID not found in test generation response.");
+  }
+  
+  // "items" array: bitta obyekt, unda barcha savollarning question_id va answer_id larini qo'shamiz
+  const items = [
+    {
+      collection_item_id: collection_item_id,
+      question_answer_ids: generatedQuestions
+    }
+  ];
+  
+  // Setup dan quyidagi ma'lumotlarni qaytaramiz, shunda default funksiyada calculate-score uchun ishlatamiz:
   return {
-    applicantApiKey,
-    collectionId,
-    testQuestions, // List of questions (answer simulation)
-    applicantId: payload.user_id, // Applicant ID from payload
+    token: applicantApiKey, // token sifatida ishlatiladi
+    applicantId: applicantPayload.user_id,
+    collectionId: collectionId,
+    applicantAttemptId: applicantAttemptId,
+    calculateScoreItems: items
   };
 }
 
-// 2️⃣ **default()** - Send multiple POST requests to calculate-score API in each iteration
+// Default: Ko'p marta calculate-score uchun so'rov yuborish
 export default function (data) {
-  if (!data.applicantApiKey) {
-    console.log("⛔ No Applicant API Key, calculate-score request will not be sent.");
-    return;
-  }
+  // Endpoint: /test-applicant-attempt/calculate-score/{token}
+  const calcScoreUrl = `https://api.admin.utas.uz/test-applicant-attempt/calculate-score/${data.token}`;
 
-  // CalculateScore API URL, using applicantApiKey as token
-  const calcScoreUrl = `https://api.admin.utas.uz/test-applicant-attempt/calculate-score/${data.applicantApiKey}`;
-
-  // Send multiple calculate-score requests using a for loop.
-  // For example, each VU sends 5 requests.
-  const iterations = 5;
-  for (let i = 0; i < iterations; i++) {
-    // Generate new applicant_attempt_id (UUID) for each request
-    const applicantAttemptId = uuidv4();
-
-    // Iterate through test questions list to form answer objects
-    let items = [];
-    data.testQuestions.forEach((q) => {
-      items.push({
-        collection_item_id: q.collection_item_id,
-        question_answer_ids: [
-          {
-            question_id: q.question_id,
-            answer_id: q.answer_id,
-          },
-        ],
-      });
-    });
-
-    // CalculateScore request payload
-    const calcPayload = {
-      applicant_attempt_id: applicantAttemptId,
-      applicant_id: data.applicantId,
-      collection_id: data.collectionId,
-      items: items,
-    };
-
-    const resCalc = http.post(calcScoreUrl, JSON.stringify(calcPayload), { headers });
-    check(resCalc, {
-      "✅ CalculateScore request successful": (r) => r.status === 200 || r.status === 201,
-      "✅ Answer selected": (r) => r.body && r.body.length > 0,
-    });
-    console.log(`📢 CalculateScore iteration ${i + 1} result: ${resCalc.body}`);
-    // Wait a bit between each request (1 second)
-    sleep(1);
-  }
+  const calcPayload = {
+    applicant_attempt_id: data.applicantAttemptId,
+    applicant_id: data.applicantId,
+    collection_id: data.collectionId,
+    items: data.calculateScoreItems
+  };
+  
+  // console.log(`📢 Payload for CalculateScore: ${JSON.stringify(calcPayload)}`);
+  
+  const resCalc = http.post(calcScoreUrl, JSON.stringify(calcPayload), { headers });
+  check(resCalc, {
+    "✅ CalculateScore request successful": (r) => r.status === 200 || r.status === 201,
+    "✅ CalculateScore response received": (r) => r.body && r.body.length > 0,
+  });
+  // console.log(`📢 CalculateScore result: ${resCalc.body}`);
+  sleep(1);
 }

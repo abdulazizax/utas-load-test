@@ -31,12 +31,12 @@ export function setup() {
       const responseBody = JSON.parse(res.body);
       if (responseBody && responseBody.applicant_api_key) {
         applicantApiKey = responseBody.applicant_api_key;
-        console.log(`✅ Applicant API Key: ${applicantApiKey}`);
+        // console.log(`✅ Applicant API Key: ${applicantApiKey}`);
       } else {
-        console.log("⚠️ Applicant API Key not found.");
+        // console.log("⚠️ Applicant API Key not found.");
       }
     } catch (e) {
-      console.error("❌ Error parsing JSON:", e);
+      // console.error("❌ Error parsing JSON:", e);
     }
   }
 
@@ -46,7 +46,7 @@ export function setup() {
 // 2️⃣ **`default()`** - Sends GET and POST requests in each iteration
 export default function (data) {
   if (!data.applicantApiKey) {
-    console.log("⛔ No Applicant API Key, request won't be sent.");
+    // console.log("⛔ No Applicant API Key, request won't be sent.");
     return;
   }
 
@@ -71,7 +71,7 @@ export default function (data) {
         if (parsedBody.exam_data && parsedBody.exam_data.collection_data) {
           examData = parsedBody.exam_data;
           collectionId = parsedBody.exam_data.collection_data.id;
-          console.log(`✅ Exam data received! Collection ID: ${collectionId}`);
+          // console.log(`✅ Exam data received! Collection ID: ${collectionId}`);
           break;
         } else {
           console.log("⚠️ Collection ID not found.");
